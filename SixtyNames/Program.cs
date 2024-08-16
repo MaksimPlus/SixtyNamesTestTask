@@ -24,10 +24,11 @@ host.Run();
 
 SqlQueryHandler handler = new SqlQueryHandler(connectionString);
 
-Console.WriteLine($"Что вы хотите сделать? {Environment.NewLine} 1 - Вывести сумму всех заключенных договоров за текущий год. {Environment.NewLine} 2 - Вывести сумму заключенных договоров по каждому контрагенту из России. {Environment.NewLine} 3 - Вывести список e-mail уполномоченных лиц, заключивших договора за последние 30 дней, на сумму больше 40000 {Environment.NewLine} 4 - Изменить статус договора на \"Расторгнут\" для физических лиц, у которых есть действующий договор, и возраст которых старше 60 лет включительно. {Environment.NewLine} 5 - Создать отчет (текстовый файл, например, в формате xml, xlsx, json) содержащий ФИО, e-mail, моб. телефон, дату рождения физ. лиц, у которых есть действующие договора по компаниям, расположенных в городе Москва. {Environment.NewLine} 0 - Выход");
+Console.WriteLine($"Что вы хотите сделать? {Environment.NewLine} 1 - Вывести сумму всех заключенных договоров за текущий год. {Environment.NewLine} 2 - Вывести сумму заключенных договоров по каждому контрагенту из России. {Environment.NewLine} 3 - Вывести список e-mail уполномоченных лиц, заключивших договора за последние 30 дней, на сумму больше 40000 {Environment.NewLine} 4 - Изменить статус договора на \"Расторгнут\" для физических лиц, у которых есть действующий договор, и возраст которых старше 60 лет включительно. {Environment.NewLine} 5 - Создать отчет (текстовый файл, например, в формате xml, xlsx, json) содержащий ФИО, e-mail, моб. телефон, дату рождения физ. лиц, у которых есть действующие договора по компаниям, расположенных в городе Москва.");
 int variable = 0;
 while (true)
 {
+    if (variable > 0 && variable <= 5)
     try
     {
         variable = int.Parse(Console.ReadLine());
@@ -60,8 +61,6 @@ if (variable > 0)
             break;
         case 5:
             handler.GetDataReader("SELECT pp.\"Name\", pp.\"Surname\", pp.\"MiddleName\", pp.\"Email\", pp.\"PhoneNumber\", pp.\"BirthDate\" FROM \"PhysicalPersons\" pp JOIN \"Contracts\" c ON pp.\"Id\" = c.\"PhysicalPersonId\" JOIN \"LegalEntities\" le ON c.\"LegalEntityId\" = le.\"Id\" WHERE c.\"Status\" = 'Заключен' AND le.\"City\" = 'Москва';");
-            break;
-        case 0:
             break;
     }
 }
